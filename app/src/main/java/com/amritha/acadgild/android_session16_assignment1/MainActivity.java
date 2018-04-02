@@ -27,7 +27,7 @@ public class MainActivity extends AppCompatActivity {
 
     EditText inputText;
 
-    TextView contentData,finalResult;
+    TextView contentData, finalResult;
 
     Button addData, deleteData;
 
@@ -122,7 +122,7 @@ public class MainActivity extends AppCompatActivity {
         protected String doInBackground(String... params) {
             publishProgress("Sleeping..."); // Calls onProgressUpdate()
             try {
-                int time = Integer.parseInt(params[0])*1000;
+                int time = Integer.parseInt(params[0]) * 1000;
 
                 Thread.sleep(time);
                 resp = "Slept for " + params[0] + " seconds";
@@ -149,7 +149,7 @@ public class MainActivity extends AppCompatActivity {
         protected void onPreExecute() {
             progressDialog = ProgressDialog.show(MainActivity.this,
                     "ProgressDialog",
-                    "Wait for 5 "+ " seconds");
+                    "Wait for 5 " + " seconds");
         }
 
 
