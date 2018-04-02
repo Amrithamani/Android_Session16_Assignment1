@@ -50,4 +50,12 @@
         android:text="@string/delete_button"
         />
 
+    <TextView
+        android:id="@+id/tv_result"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="7pt"
+        android:layout_below="@+id/deleteButton"
+        android:layout_centerHorizontal="true" />
+
 </RelativeLayout>

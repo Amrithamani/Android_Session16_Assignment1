@@ -1,7 +1,9 @@
 package com.amritha.acadgild.android_session16_assignment1;
 
 import android.Manifest;
+import android.app.ProgressDialog;
 import android.content.pm.PackageManager;
+import android.os.AsyncTask;
 import android.os.Environment;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -25,7 +27,7 @@ public class MainActivity extends AppCompatActivity {
 
     EditText inputText;
 
-    TextView contentData;
+    TextView contentData,finalResult;
 
     Button addData, deleteData;
 
@@ -43,6 +45,8 @@ public class MainActivity extends AppCompatActivity {
         inputText = findViewById(R.id.enterText);
 
         contentData = findViewById(R.id.contentData);
+
+        finalResult = findViewById(R.id.tv_result);
 
         addData = findViewById(R.id.addButton);
 
@@ -67,6 +71,11 @@ public class MainActivity extends AppCompatActivity {
                         //creating output stream
                         FileOutputStream fos = new FileOutputStream(textFile);
                         fos.write(data.getBytes());
+
+                        AsyncTaskRunner runner = new AsyncTaskRunner();
+                        String sleepTime = "5";
+                        runner.execute(sleepTime);
+
                         contentData.setText(data);
                         fos.close();
 
@@ -89,6 +98,10 @@ public class MainActivity extends AppCompatActivity {
                 if (textFile.exists()) {
                     deleteFile(filename);//deleting the file
 
+                    AsyncTaskRunner runner = new AsyncTaskRunner();
+                    String sleepTime = "5";
+                    runner.execute(sleepTime);
+
                     Toast.makeText(MainActivity.this, "File deleted Successfully", Toast.LENGTH_LONG).show();
                 } else {
                     Toast.makeText(MainActivity.this, "File not deleted", Toast.LENGTH_SHORT).show();
@@ -96,6 +109,55 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
+    }
+
+    //creating AsynkTask class
+
+    private class AsyncTaskRunner extends AsyncTask<String, String, String> {
+
+        private String resp;
+        ProgressDialog progressDialog;
+
+        @Override
+        protected String doInBackground(String... params) {
+            publishProgress("Sleeping..."); // Calls onProgressUpdate()
+            try {
+                int time = Integer.parseInt(params[0])*1000;
+
+                Thread.sleep(time);
+                resp = "Slept for " + params[0] + " seconds";
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+                resp = e.getMessage();
+            } catch (Exception e) {
+                e.printStackTrace();
+                resp = e.getMessage();
+            }
+            return resp;
+        }
+
+
+        @Override
+        protected void onPostExecute(String result) {
+            // execution of result of Long time consuming operation
+            progressDialog.dismiss();
+            finalResult.setText(result);
+        }
+
+
+        @Override
+        protected void onPreExecute() {
+            progressDialog = ProgressDialog.show(MainActivity.this,
+                    "ProgressDialog",
+                    "Wait for 5 "+ " seconds");
+        }
+
+
+        @Override
+        protected void onProgressUpdate(String... text) {
+            finalResult.setText(text[0]);
+
+        }
     }
 
     //checking permission for External storage
